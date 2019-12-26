@@ -1,48 +1,30 @@
 package de.mathit.graph;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static de.mathit.graph.Passenger.Cabbage;
 import static de.mathit.graph.Passenger.Ferryman;
+import static de.mathit.graph.Passenger.Goat;
+import static de.mathit.graph.Passenger.Wolf;
 
 public class PassengerAdjacentFunction implements
-    Function<PassengerState, Map<PassengerState, String>> {
-
-  private static final Function<Collection<Passenger>, Collection<Passenger>> WHO_CAN_MOVE = c -> {
-    if (!c.contains(Ferryman)) {
-      return Collections.emptyList();
-    } else {
-      return c;
-    }
-  };
-
-  private static final Function<Passenger, Collection<Passenger>> WHO_MUST_FOLLOW = p -> {
-    if (Ferryman.equals(p)) {
-      return Collections.singleton(p);
-    } else {
-      final List<Passenger> list = new LinkedList<>();
-      list.add(p);
-      list.add(Ferryman);
-      return list;
-    }
-  };
+    Function<Set<Passenger>, Map<Set<Passenger>, String>> {
 
   private static Predicate<Collection<Passenger>> IS_VALID = c -> {
     if (c.contains(Ferryman)) {
       return true;
     }
-    if (c.contains(Passenger.Wolf) && c.contains(Passenger.Goat)) {
+    if (c.contains(Wolf) && c.contains(Goat)) {
       return false;
     }
-    if (c.contains(Passenger.Goat) && c.contains(Passenger.Cabbage)) {
+    if (c.contains(Goat) && c.contains(Cabbage)) {
       return false;
     }
     return true;
@@ -50,40 +32,54 @@ public class PassengerAdjacentFunction implements
 
 
   @Override
-  public Map<PassengerState, String> apply(final PassengerState s) {
-    final Map<PassengerState, String> result = new HashMap<>();
-    if (s.getFrom().isEmpty()) {
+  public Map<Set<Passenger>, String> apply(final Set<Passenger> s) {
+    final Map<Set<Passenger>, String> result = new HashMap<>();
+    if (s.containsAll(Arrays.asList(Passenger.values()))) {
       return result;
     }
-    for (final Passenger p : WHO_CAN_MOVE.apply(s.getFrom())) {
-      final Set<Passenger> newFrom = new HashSet<>();
-      newFrom.addAll(s.getFrom());
-      final Set<Passenger> newTo = new HashSet<>();
-      newTo.addAll(s.getTo());
-      final Collection<Passenger> passengers = WHO_MUST_FOLLOW.apply(p);
-      for (final Passenger t : passengers) {
-        newFrom.remove(t);
-        newTo.add(t);
+
+    if (s.contains(Ferryman)) {
+      for (final Passenger p : s) {
+        final Set<Passenger> newTo = new HashSet<>();
+        newTo.addAll(s);
+        final Set<Passenger> passengers = new HashSet<>();
+        passengers.add(p);
+        if (!Ferryman.equals(p)) {
+          passengers.add(Ferryman);
+        }
+        newTo.removeAll(passengers);
+
+        if (isValid(newTo)) {
+          result.put(newTo, String.format("%s back", passengers));
+        }
       }
-      if (IS_VALID.test(newFrom) && IS_VALID.test(newTo)) {
-        result.put(new PassengerState(newFrom, newTo), String.format("%s forth", passengers));
+    } else {
+
+      final Set<Passenger> from = new HashSet<>(Arrays.asList(Passenger.values()));
+      from.removeAll(s);
+      for (final Passenger p : from) {
+        final Set<Passenger> newTo = new HashSet<>();
+        newTo.addAll(s);
+        final Set<Passenger> passengers = new HashSet<>();
+        passengers.add(p);
+        if (!Ferryman.equals(p)) {
+          passengers.add(Ferryman);
+        }
+        newTo.addAll(passengers);
+
+        if (isValid(newTo)) {
+          result.put(newTo, String.format("%s forth", passengers));
+        }
       }
     }
-    for (final Passenger p : WHO_CAN_MOVE.apply(s.getTo())) {
-      final Set<Passenger> newFrom = new HashSet<>();
-      newFrom.addAll(s.getFrom());
-      final Set<Passenger> newTo = new HashSet<>();
-      newTo.addAll(s.getTo());
-      final Collection<Passenger> passengers = WHO_MUST_FOLLOW.apply(p);
-      for (final Passenger t : passengers) {
-        newTo.remove(t);
-        newFrom.add(t);
-      }
-      if (IS_VALID.test(newFrom) && IS_VALID.test(newTo)) {
-        result.put(new PassengerState(newFrom, newTo), String.format("%s back", passengers));
-      }
-    }
+
     return result;
+  }
+
+  private boolean isValid(final Set<Passenger> s) {
+    final Set<Passenger> from = new HashSet<>(Arrays.asList(Passenger.values()));
+    from.removeAll(s);
+    return IS_VALID.test(from) && IS_VALID.test(s);
   }
 
 }

@@ -59,27 +59,24 @@ public class WeightedGraphsTest {
 
     final Set<Passenger> all = Stream.of(Passenger.values()).collect(Collectors.toSet());
 
-    final PassengerState startState = new PassengerState(all, new HashSet<>());
+    final Set<Passenger> startState = new HashSet<>();
 
-    final WeightedGraph<PassengerState, String> graph = WeightedGraphs
+    final WeightedGraph<Set<Passenger>, String> graph = WeightedGraphs
         .adjacentFunction(startState, new PassengerAdjacentFunction());
 
-    final PassengerState endState = new PassengerState(new HashSet<>(), all);
-    final List<WeightedGraph.WeightedEdge<PassengerState, String>> path = graph
-        .dijkstra(startState, e -> 1).get(endState);
+    final List<WeightedGraph.WeightedEdge<Set<Passenger>, String>> path = graph
+        .dijkstra(startState, e -> 1).get(all);
     assertEquals("Wrong length of path.", 7, path.size());
     assertEquals("Wrong start state.", startState, path.get(0).getFrom());
-    assertEquals("Wrong end state.", endState, path.get(path.size() - 1).getTo());
-    final Set<PassengerState> allStates = graph.nodes().collect(Collectors.toSet());
-    for (final WeightedGraph.WeightedEdge<PassengerState, String> state : path) {
+    assertEquals("Wrong end state.", all, path.get(path.size() - 1).getTo());
+    final Set<Set<Passenger>> allStates = graph.nodes().collect(Collectors.toSet());
+    for (final WeightedGraph.WeightedEdge<Set<Passenger>, String> state : path) {
       if (!allStates.contains(state.getFrom()) || !allStates.contains(state.getTo())) {
         fail("Illegal state in path.");
       }
     }
-    for (final WeightedGraph.WeightedEdge<PassengerState, String> edge : path) {
-      System.out.println(
-          edge.getWeight() + "\t ------> " + edge.getTo().getFrom() + " waiting, " + edge.getTo()
-              .getTo() + " over there");
+    for (final WeightedGraph.WeightedEdge<Set<Passenger>, String> edge : path) {
+      System.out.println(edge.getWeight() + "\t ------> " + edge.getTo() + " over there");
     }
   }
 
