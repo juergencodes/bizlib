@@ -41,17 +41,29 @@ public class WeightedGraphsTest {
     assertFalse("Expected no edge.", graph.getWeight(9, 18).isPresent());
     assertFalse("Expected no edge.", graph.getWeight(100, 100).isPresent());
 
+    assertEquals("Wrong size of ins.", 1, graph.ins(16).count());
+    assertEquals("Wrong size of ins.", 0, graph.ins(15).count());
+
+    final Map<Integer, Long> inDegrees = graph.inDegrees();
+    assertEquals("Wrong in degree.", Long.valueOf(1), inDegrees.get(16));
+    assertEquals("Wrong in degree.", Long.valueOf(0), inDegrees.get(15));
+
     assertEquals("Wrong size of outs.", 1, graph.outs(1).count());
     assertEquals("Wrong size of outs.", 0, graph.outs(9).count());
 
-    assertEquals("Wrong size of ins.", 1, graph.ins(16).count());
-    assertEquals("Wrong size of ins.", 0, graph.ins(15).count());
+    final Map<Integer, Long> outDegrees = graph.outDegrees();
+    assertEquals("Wrong out degree.", Long.valueOf(1), outDegrees.get(1));
+    assertEquals("Wrong out degree.", Long.valueOf(0), outDegrees.get(9));
 
     assertFalse("Expected 8 not to be leaf.", graph.isLeaf(8));
     assertTrue("Expected 9 to be leaf.", graph.isLeaf(9));
 
     assertEquals("Wrong set of leafs.", new HashSet<>(Arrays.asList(9, 10, 11, 12, 13, 14, 15, 16)),
         graph.leafs().collect(Collectors.toSet()));
+
+    assertEquals("Wrong topological sort.",
+        Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
+        graph.topologicalSort());
   }
 
   @Test

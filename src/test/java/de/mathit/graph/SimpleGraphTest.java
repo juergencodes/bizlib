@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -19,7 +18,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 public class SimpleGraphTest {
 
@@ -58,8 +56,39 @@ public class SimpleGraphTest {
     assertEquals("Wrong length of path.", 2, paths.get('c').size());
     assertEquals("Wrong length of path.", 3, paths.get('d').size());
     assertNull("Expected no path.", paths.get('e'));
+
+    assertEquals("Wrong topological sort.", Arrays.asList('a', 'b', 'c', 'd', 'e'),
+        graph.topologicalSort());
   }
 
+  @Test
+  public void adjecentFunctionCycle() {
+    final Supplier<Stream<Integer>> nodes = () -> Stream.of(1, 2, 3);
+    final Function<Integer, Collection<Integer>> functionNoCycle = c -> {
+      switch (c) {
+        case 1:
+          return Arrays.asList(2);
+        case 2:
+          return Arrays.asList(3);
+        default:
+          return Collections.emptyList();
+      }
+    };
+    final Function<Integer, Collection<Integer>> functionCycle = c -> {
+      switch (c) {
+        case 1:
+          return Arrays.asList(2);
+        case 2:
+          return Arrays.asList(3);
+        case 3:
+          return Arrays.asList(1);
+        default:
+          return Collections.emptyList();
+      }
+    };
+    assertFalse("Expected no cycle.", SimpleGraphs.adjacentFunction(1, functionNoCycle).hasCycle());
+    assertTrue("Expected a cycle.", SimpleGraphs.adjacentFunction(1, functionCycle).hasCycle());
+  }
 
 
 }

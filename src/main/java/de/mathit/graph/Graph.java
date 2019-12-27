@@ -1,6 +1,7 @@
 package de.mathit.graph;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,14 @@ public interface Graph<N, E extends Graph.Edge> {
 
   default Stream<E> outs(N node) {
     return nodes().map(n -> edge(node, n)).filter(Optional::isPresent).map(Optional::get);
+  }
+
+  default Map<N, Long> inDegrees() {
+    return nodes().collect(Collectors.toMap(n -> n, n -> ins(n).count()));
+  }
+
+  default Map<N, Long> outDegrees() {
+    return nodes().collect(Collectors.toMap(n -> n, n -> outs(n).count()));
   }
 
   default boolean isLeaf(N node) {
@@ -97,6 +106,29 @@ public interface Graph<N, E extends Graph.Edge> {
     });
 
     return paths;
+  }
+
+  default List<N> topologicalSort() {
+    final Map<N, Long> inDegrees = inDegrees();
+    Optional<N> zeroNode;
+    final List<N> result = new LinkedList<>();
+    final Set<N> visited = new HashSet<>();
+    do {
+      zeroNode = inDegrees.entrySet().stream().filter(e -> !visited.contains(e.getKey()))
+          .filter(e -> e.getValue() == 0).findAny().map(e -> e.getKey());
+      if (zeroNode.isPresent()) {
+        final N theZeroNode = zeroNode.get();
+        visited.add(theZeroNode);
+        result.add(theZeroNode);
+        nodes().filter(n -> edge(theZeroNode, n).isPresent())
+            .forEach(n -> inDegrees.put(n, inDegrees.get(n) - 1));
+      }
+    } while (zeroNode.isPresent());
+    return result.isEmpty() ? null : result;
+  }
+
+  default boolean hasCycle() {
+    return topologicalSort() == null;
   }
 
   interface Edge {
