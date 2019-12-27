@@ -3,15 +3,11 @@ package de.mathit.graph;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -107,29 +103,6 @@ public class GraphTest {
 
   @Test
   public void hasCycle() {
-    final Supplier<Stream<Integer>> nodes = () -> Stream.of(1, 2, 3);
-    final Function<Integer, Collection<Integer>> functionNoCycle = c -> {
-      switch (c) {
-        case 1:
-          return Arrays.asList(2);
-        case 2:
-          return Arrays.asList(3);
-        default:
-          return Collections.emptyList();
-      }
-    };
-    final Function<Integer, Collection<Integer>> functionCycle = c -> {
-      switch (c) {
-        case 1:
-          return Arrays.asList(2);
-        case 2:
-          return Arrays.asList(3);
-        case 3:
-          return Arrays.asList(1);
-        default:
-          return Collections.emptyList();
-      }
-    };
     assertFalse("Expected no cycle.", graph("abc", "ab", "bc").hasCycle());
     assertTrue("Expected a cycle.", graph("abc", "ab", "bc", "ca").hasCycle());
   }

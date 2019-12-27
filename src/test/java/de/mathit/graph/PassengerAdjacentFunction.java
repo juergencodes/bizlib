@@ -40,8 +40,7 @@ public class PassengerAdjacentFunction implements
 
     if (s.contains(Ferryman)) {
       for (final Passenger p : s) {
-        final Set<Passenger> newTo = new HashSet<>();
-        newTo.addAll(s);
+        final Set<Passenger> newTo = new HashSet<>(s);
         final Set<Passenger> passengers = new HashSet<>();
         passengers.add(p);
         if (!Ferryman.equals(p)) {
