@@ -19,9 +19,9 @@ import java.util.stream.Stream;
  * @param <N> Type of nodes. Make sure to implement {@link #hashCode() and {@link #equals(Object)}}
  *            properly, as algorithms may rely on adding nodes to a {@link java.util.HashSet} or
  *            alike.
- * @param <E> Type of edges. Must extend marker interface {@link Edge}.
+ * @param <E> Type of edges.
  */
-public interface Graph<N, E extends Graph.Edge> {
+public interface Graph<N, E> {
 
   Stream<N> nodes();
 
@@ -129,10 +129,6 @@ public interface Graph<N, E extends Graph.Edge> {
 
   default boolean hasCycle() {
     return topologicalSort() == null;
-  }
-
-  interface Edge {
-
   }
 
 }

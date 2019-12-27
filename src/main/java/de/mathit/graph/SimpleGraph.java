@@ -14,10 +14,11 @@ public interface SimpleGraph<N> extends Graph<N, SimpleGraph.SimpleEdge<N>> {
     return dijkstra(node, e -> 1);
   }
 
-  interface SimpleEdge<N> extends Graph.Edge {
+  interface SimpleEdge<N> {
 
     N getFrom();
 
     N getTo();
   }
+
 }

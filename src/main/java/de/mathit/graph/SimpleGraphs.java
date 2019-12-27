@@ -3,7 +3,9 @@ package de.mathit.graph;
 import de.mathit.graph.SimpleGraph.SimpleEdge;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -11,6 +13,21 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class SimpleGraphs {
+
+  /**
+   * Create a new {@ SimpleGraph} by providing a {@link Map} containing adjacent lists. The nodes
+   * will be retrieved from the entry set of the {@link Map}.
+   *
+   * @param adjacentLists {@link Map} of adjacent lists.
+   * @param <N>           Node type
+   * @return {@link SimpleGraph} instance
+   */
+  public static <N> SimpleGraph<N> adjacentList(final Map<N, Collection<N>> adjacentLists) {
+    final Supplier<Stream<N>> nodes = () -> adjacentLists.keySet().stream();
+    final Function<N, Collection<N>> function = n -> adjacentLists.containsKey(n) ? adjacentLists
+        .get(n) : Collections.emptyList();
+    return adjacentFunction(nodes, function);
+  }
 
   /**
    * Create a new {@link SimpleGraph} for a (not yet) known set of nodes and a function (the
