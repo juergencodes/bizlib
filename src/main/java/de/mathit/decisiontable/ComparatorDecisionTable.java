@@ -6,7 +6,7 @@ import java.util.Optional;
 /**
  * Specialized version of {@link GenericDecisionTable} that uses {@link Integer} as output to assign
  * every row a row number. The row number is not meant to be exposed to the outside world, but can
- * of course be, if required. Rather, it allows this class to act as {@Comparator}.
+ * of course be, if required. Rather, it allows this class to act as {@link Comparator}.
  *
  * @param <R> Row type
  * @param <F> Fact type

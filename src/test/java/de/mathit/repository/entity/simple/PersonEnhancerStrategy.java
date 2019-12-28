@@ -1,18 +1,18 @@
 package de.mathit.repository.entity.simple;
 
+import de.mathit.repository.Entity;
+import de.mathit.repository.enhancer.EnhancerStrategy;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 
-import de.mathit.repository.Entity;
-import de.mathit.repository.enhancer.EnhancerStrategy;
-
 final class PersonEnhancerStrategy implements EnhancerStrategy<Entity> {
 
   @Override
-  public boolean canEnhance(String name) {
+  public boolean canEnhance(final String name) {
     return name.equals(Person.class.getName());
   }
 
@@ -27,10 +27,9 @@ final class PersonEnhancerStrategy implements EnhancerStrategy<Entity> {
   }
 
   @Override
-  public Object enhance(Entity entity) {
+  public Object enhance(final Entity entity) {
     final Date birthDate = entity.get("birthDate");
-    final LocalDate date = Instant.ofEpochMilli(birthDate.getTime())
-        .atZone(ZoneId.systemDefault())
+    final LocalDate date = Instant.ofEpochMilli(birthDate.getTime()).atZone(ZoneId.systemDefault())
         .toLocalDate();
     return Period.between(date, LocalDate.now());
   }

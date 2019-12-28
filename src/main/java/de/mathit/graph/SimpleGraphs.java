@@ -15,8 +15,8 @@ import java.util.stream.Stream;
 public class SimpleGraphs {
 
   /**
-   * Create a new {@ SimpleGraph} by providing a {@link Map} containing adjacent lists. The nodes
-   * will be retrieved from the entry set of the {@link Map}.
+   * Create a new {@link SimpleGraph} by providing a {@link Map} containing adjacent lists. The
+   * nodes will be retrieved from the entry set of the {@link Map}.
    *
    * @param adjacentLists {@link Map} of adjacent lists.
    * @param <N>           Node type
@@ -24,8 +24,8 @@ public class SimpleGraphs {
    */
   public static <N> SimpleGraph<N> adjacentList(final Map<N, Collection<N>> adjacentLists) {
     final Supplier<Stream<N>> nodes = () -> adjacentLists.keySet().stream();
-    final Function<N, Collection<N>> function = n -> adjacentLists.containsKey(n) ? adjacentLists
-        .get(n) : Collections.emptyList();
+    final Function<N, Collection<N>> function = n -> adjacentLists
+        .getOrDefault(n, Collections.emptyList());
     return adjacentFunction(nodes, function);
   }
 
@@ -89,7 +89,7 @@ public class SimpleGraphs {
     };
   }
 
-  private static <N, W> SimpleEdge<N> createEdge(final N from, N to) {
+  private static <N, W> SimpleEdge<N> createEdge(final N from, final N to) {
     return new SimpleEdge<N>() {
       @Override
       public N getFrom() {

@@ -11,7 +11,7 @@ public class SimpleEntityMetadata implements EntityMetadata {
   private final String name;
   private final Iterable<FieldMetadata> fieldIterable;
 
-  public SimpleEntityMetadata(String name, Iterable<FieldMetadata> fields) {
+  public SimpleEntityMetadata(final String name, final Iterable<FieldMetadata> fields) {
     super();
     this.name = name;
     this.fieldIterable = fields;

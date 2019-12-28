@@ -1,24 +1,24 @@
 package de.mathit.decisiontable;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class ComparatorDecisionTableTest {
 
   @Test
   public void test() {
-    final ComparatorDecisionTable<Integer, String> decisionTable = new ComparatorDecisionTable();
+    final ComparatorDecisionTable<Integer, String> decisionTable = new ComparatorDecisionTable<>();
 
     decisionTable.addCondition((x, s) -> s.length() == x);
 
-    decisionTable.addRow(1);
-    decisionTable.addRow(2);
-    decisionTable.addRow(3);
+    decisionTable.addRow(1).addRow(2).addRow(3);
 
     assertLower(decisionTable, "a", "aa");
+    assertGreater(decisionTable, "bb", "a");
     assertGreater(decisionTable, "bbb", "b");
     assertLower(decisionTable, "cccc", "c"); // lower, because no row
+    assertSame(decisionTable, "a", "a");
     assertSame(decisionTable, "dd", "dd");
 
   }

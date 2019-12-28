@@ -1,6 +1,5 @@
 package de.mathit.repository;
 
-
 public interface Entity {
 
   String getName();

@@ -19,17 +19,16 @@ import java.util.stream.Collectors;
 public class MyCollectors {
 
   public static <V, G> Collector<V, List<GroupStore<V, G>>, List<G>> groupAndAggregate(
-      final BiPredicate<V, V> predicate,
-      final Function<V, G> grouper, final BiFunction<V, G, G> combiner) {
+      final BiPredicate<V, V> predicate, final Function<V, G> grouper,
+      final BiFunction<V, G, G> combiner) {
     final BiFunction<V, G, G> aggregator = (v, g) -> g;
     return groupAndAggregate(predicate, grouper, combiner, aggregator);
   }
 
 
   public static <V, G, A> Collector<V, List<GroupStore<V, G>>, List<A>> groupAndAggregate(
-      final BiPredicate<V, V> predicate,
-      final Function<V, G> grouper, final BiFunction<V, G, G> combiner,
-      final BiFunction<V, G, A> aggregator) {
+      final BiPredicate<V, V> predicate, final Function<V, G> grouper,
+      final BiFunction<V, G, G> combiner, final BiFunction<V, G, A> aggregator) {
     final Supplier<List<GroupStore<V, G>>> supplier = LinkedList::new;
     final BiConsumer<List<GroupStore<V, G>>, V> accumulator = (x, a) -> {
       final Optional<GroupStore<V, G>> existing = x.stream()
@@ -48,9 +47,8 @@ public class MyCollectors {
       x.addAll(y);
       return x;
     };
-    final Function<List<GroupStore<V, G>>, List<A>> finisher =
-        x -> x.stream().map(a -> aggregator.apply(a.example, a.group
-        )).collect(Collectors.toList());
+    final Function<List<GroupStore<V, G>>, List<A>> finisher = x -> x.stream()
+        .map(a -> aggregator.apply(a.example, a.group)).collect(Collectors.toList());
 
     return Collector.of(supplier, accumulator, listCombiner, finisher);
   }

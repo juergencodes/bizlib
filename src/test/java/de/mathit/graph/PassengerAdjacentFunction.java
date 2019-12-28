@@ -21,11 +21,8 @@ public class PassengerAdjacentFunction implements
     if (c.contains(Ferryman)) {
       return true;
     }
-    if (c.contains(Wolf) && c.contains(Goat)) {
-      return false;
-    }
-    if (c.contains(Goat) && c.contains(Cabbage)) {
-      return false;
+    if (c.contains(Goat)) {
+      return !c.contains(Wolf) && !c.contains(Cabbage);
     }
     return true;
   };
@@ -57,8 +54,7 @@ public class PassengerAdjacentFunction implements
       final Set<Passenger> from = new HashSet<>(Arrays.asList(Passenger.values()));
       from.removeAll(s);
       for (final Passenger p : from) {
-        final Set<Passenger> newTo = new HashSet<>();
-        newTo.addAll(s);
+        final Set<Passenger> newTo = new HashSet<>(s);
         final Set<Passenger> passengers = new HashSet<>();
         passengers.add(p);
         if (!Ferryman.equals(p)) {

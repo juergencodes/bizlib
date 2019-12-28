@@ -23,6 +23,7 @@ public interface BooleanDecisionTable<R, F> extends DecisionTable<R, F, Boolean>
   }
 
 
+  @SafeVarargs
   static <R, F> BooleanDecisionTable<R, F> flex(final BiPredicate<R, F> matcher, final R... rules) {
     return BooleanDecisionTable.flex(matcher, Arrays.asList(rules));
   }

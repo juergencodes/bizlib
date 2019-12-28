@@ -1,9 +1,9 @@
 package de.mathit.decisiontable;
 
+import org.junit.Test;
+
 import static de.mathit.decisiontable.TestSupport.assertNoResult;
 import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
 
 public class BooleanDecisionTableTest {
 
@@ -37,8 +37,7 @@ public class BooleanDecisionTableTest {
   @Test
   public void blackListing() {
     final BooleanDecisionTable<String, String> decisionTable = BooleanDecisionTable
-        .flex((r, f) -> f.contains(r),
-            "no", "yes", "maybe");
+        .flex((r, f) -> f.contains(r), "no", "yes", "maybe");
     assertMatch(decisionTable, "yes");
     assertMatch(decisionTable, "this contains no");
     assertMatch(decisionTable, "noyesmaybe");

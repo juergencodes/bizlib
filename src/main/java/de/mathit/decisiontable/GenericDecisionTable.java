@@ -1,6 +1,7 @@
 package de.mathit.decisiontable;
 
 import de.mathit.decisiontable.GenericDecisionTable.Row;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiFunction;

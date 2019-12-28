@@ -7,11 +7,11 @@ public class EntityRepositoryTemplate {
 
   private final EntityRepository entityRepository;
 
-  public EntityRepositoryTemplate(EntityRepository entityRepository) {
+  public EntityRepositoryTemplate(final EntityRepository entityRepository) {
     super();
     if (entityRepository == null) {
-      throw new IllegalArgumentException("Given "
-          + EntityRepository.class.getSimpleName() + " is null.");
+      throw new IllegalArgumentException(
+          "Given " + EntityRepository.class.getSimpleName() + " is null.");
     }
     this.entityRepository = entityRepository;
   }
@@ -22,8 +22,7 @@ public class EntityRepositoryTemplate {
         return metadata;
       }
     }
-    throw new IllegalStateException(
-        "There is no metadata for entity name '" + name + "'.");
+    throw new IllegalStateException("There is no metadata for entity name '" + name + "'.");
   }
 
 }

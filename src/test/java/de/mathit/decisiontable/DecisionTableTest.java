@@ -1,10 +1,11 @@
 package de.mathit.decisiontable;
 
-import static de.mathit.decisiontable.TestSupport.assertResult;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.function.BiPredicate;
-import org.junit.Test;
+
+import static de.mathit.decisiontable.TestSupport.assertResult;
 
 public class DecisionTableTest {
 
@@ -12,10 +13,9 @@ public class DecisionTableTest {
 
   @Test
   public void flex() {
-    final DecisionTable<Integer, String, String> decisionTable =
-        DecisionTable
-            .flex(LENGTH, (r, f) -> String.format("'%s' has length %d", f, r),
-                Arrays.asList(1, 2, 3, 4, 5));
+    final DecisionTable<Integer, String, String> decisionTable = DecisionTable
+        .flex(LENGTH, (r, f) -> String.format("'%s' has length %d", f, r),
+            Arrays.asList(1, 2, 3, 4, 5));
 
     assertResult(decisionTable, "ab", "'ab' has length 2");
     assertResult(decisionTable, "hello", "'hello' has length 5");

@@ -1,10 +1,12 @@
 package de.mathit.decisiontable;
 
-import static de.mathit.decisiontable.TestSupport.assertResult;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Test;
+
+import static de.mathit.decisiontable.TestSupport.assertResult;
+import static org.junit.Assert.assertFalse;
 
 public class CustomizableDecisionTableTest {
 
@@ -15,6 +17,7 @@ public class CustomizableDecisionTableTest {
     decisionTable.addRow("Max", "Meier", true);
     decisionTable.addRow(null, null, false);
 
+    assertFalse("Expected not all to match.", decisionTable.allMatch(new Person("Peter", "Meier")));
     assertResult(decisionTable, new Person("Peter", "Meier"), true);
     assertResult(decisionTable, new Person("Max", "Meier"), true);
     assertResult(decisionTable, new Person("Max", "Huber"), false);

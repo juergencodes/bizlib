@@ -1,18 +1,17 @@
 package de.mathit.repository.enhancer;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import de.mathit.repository.Entity;
 import de.mathit.repository.EntityMetadata;
 import de.mathit.repository.EntityRepository;
 import de.mathit.repository.support.NestedRepository;
 
-public class EnhancerEntityRepository extends NestedRepository<Entity>
-    implements EntityRepository {
+import java.util.LinkedList;
+import java.util.List;
+
+public class EnhancerEntityRepository extends NestedRepository<Entity> implements EntityRepository {
 
   // TODO create better solution, not breaking up the iterator
-  final List<EntityMetadata> metadata;
+  private final List<EntityMetadata> metadata;
   // TODO allow only one here, for multipe create chain of responsibility
   private EnhancerStrategy<Entity> enhancerStrategy;
 
@@ -20,12 +19,11 @@ public class EnhancerEntityRepository extends NestedRepository<Entity>
       final EnhancerStrategy<Entity> enhancerStrategy) {
     super(nestedRepository);
     this.enhancerStrategy = enhancerStrategy;
-    this.metadata = new LinkedList<EntityMetadata>();
+    this.metadata = new LinkedList<>();
     for (final EntityMetadata m : nestedRepository.metadata()) {
       if (enhancerStrategy.canEnhance(m.name())) {
-        this.metadata.add(new EnhancedEntityMetadata(m,
-            enhancerStrategy.fieldName(), enhancerStrategy
-            .fieldType()));
+        this.metadata.add(new EnhancedEntityMetadata(m, enhancerStrategy.fieldName(),
+            enhancerStrategy.fieldType()));
       } else {
         this.metadata.add(m);
       }
@@ -38,7 +36,7 @@ public class EnhancerEntityRepository extends NestedRepository<Entity>
   }
 
   @Override
-  protected Entity postProcessEntity(Entity entity) {
+  protected Entity postProcessEntity(final Entity entity) {
     if (enhancerStrategy.canEnhance(entity.getName())) {
       final Object value = enhancerStrategy.enhance(entity);
       entity.set(enhancerStrategy.fieldName(), value);

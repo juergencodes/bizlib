@@ -1,9 +1,9 @@
 package de.mathit.repository.entity.simple;
 
+import de.mathit.repository.FieldMetadata;
+
 import java.util.LinkedList;
 import java.util.List;
-
-import de.mathit.repository.FieldMetadata;
 
 public class SimpleEntityMetadataBuilder {
 

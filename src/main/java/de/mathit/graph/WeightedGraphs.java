@@ -74,7 +74,7 @@ public class WeightedGraphs {
     };
   }
 
-  private static <N, W> WeightedEdge<N, W> createEdge(final N from, N to, final W weight) {
+  private static <N, W> WeightedEdge<N, W> createEdge(final N from, final N to, final W weight) {
     return new WeightedEdge<N, W>() {
       @Override
       public N getFrom() {

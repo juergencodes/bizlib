@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public interface SimpleGraph<N> extends Graph<N, SimpleGraph.SimpleEdge<N>> {
 
-  default Map<N, List<SimpleEdge<N>>> dijkstra(N node) {
+  default Map<N, List<SimpleEdge<N>>> dijkstra(final N node) {
     return dijkstra(node, e -> 1);
   }
 

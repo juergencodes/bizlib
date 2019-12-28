@@ -23,8 +23,7 @@ public class CustomizableDecisionTable<F, O> implements DecisionTable<Map<String
   private final List<Map<String, Object>> rows = new LinkedList<>();
   private final BiFunction<Map<String, Object>, F, O> finalizer;
 
-  public CustomizableDecisionTable(
-      BiFunction<Map<String, Object>, F, O> finalizer) {
+  public CustomizableDecisionTable(final BiFunction<Map<String, Object>, F, O> finalizer) {
     this.finalizer = finalizer;
   }
 
@@ -43,15 +42,12 @@ public class CustomizableDecisionTable<F, O> implements DecisionTable<Map<String
     return finalizer;
   }
 
-  protected CustomizableDecisionTable<F, O> addCondition(
-      final BiPredicate<Map<String, Object>, F> matcher) {
+  protected void addCondition(final BiPredicate<Map<String, Object>, F> matcher) {
     matchers.add(matcher);
-    return this;
   }
 
-  protected CustomizableDecisionTable<F, O> addRow(final Map<String, Object> row) {
+  protected void addRow(final Map<String, Object> row) {
     rows.add(row);
-    return this;
   }
 
   protected RowBuilder addRow() {

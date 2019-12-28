@@ -11,16 +11,15 @@ public class SimpleFieldMetadata implements FieldMetadata {
   private final Class<?> type;
   private final boolean writable;
 
-  protected SimpleFieldMetadata(final String name, final Class<?> type,
-      final boolean writable) {
+  protected SimpleFieldMetadata(final String name, final Class<?> type, final boolean writable) {
     super();
     this.name = name;
     this.type = type;
     this.writable = writable;
   }
 
-  public static SimpleFieldMetadata create(final String name,
-      final Class<?> type, final boolean writable) {
+  public static SimpleFieldMetadata create(final String name, final Class<?> type,
+      final boolean writable) {
     return new SimpleFieldMetadata(name, type, writable);
   }
 

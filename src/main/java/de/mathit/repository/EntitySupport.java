@@ -18,7 +18,7 @@ public abstract class EntitySupport implements Entity {
   }
 
   @Override
-  public <T> void set(String name, T value) {
+  public <T> void set(final String name, final T value) {
     throw new UnsupportedOperationException();
   }
 
