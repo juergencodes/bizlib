@@ -11,9 +11,9 @@ import java.util.function.Function;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Test {@link MyCollectors}.
+ * Test {@link MyCollectors#groupAndAggregate} with {@link Person}:
  */
-public class MyCollectorsTest {
+public class MyCollectorsGroupAndAggregate2Test {
 
   @Test
   public void sumAge1() {
